@@ -1,6 +1,7 @@
 import { UserService } from './user.service';
 import { UserRepository } from '../../infrastructure/users/user.repository';
 import { User } from '../../domain/users/user.entity';
+import { NotFoundException, ConflictException } from '@nestjs/common';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -42,41 +43,116 @@ describe('UserService', () => {
     expect(typeof userService.delete).toBe('function');
   });
 
-  it('should throw "Method not implemented" for findById', async () => {
-    await expect(userService.findById('1')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findById', () => {
+    it('should call repository findById and return user', async () => {
+      const mockUser: User = {
+        id: '1',
+        email: 'test@example.com',
+        username: 'testuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockUserRepository.findById.mockResolvedValue(mockUser);
+
+      const result = await userService.findById('1');
+
+      expect(mockUserRepository.findById).toHaveBeenCalledWith('1');
+      expect(result).toEqual(mockUser);
+    });
+
+    it('should throw error for invalid ID', async () => {
+      await expect(userService.findById('')).rejects.toThrow('Invalid user ID provided');
+    });
   });
 
-  it('should throw "Method not implemented" for findAll', async () => {
-    await expect(userService.findAll()).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findAll', () => {
+    it('should call repository findAll and return users', async () => {
+      const mockUsers: User[] = [];
+      mockUserRepository.findAll.mockResolvedValue(mockUsers);
+
+      const result = await userService.findAll();
+
+      expect(mockUserRepository.findAll).toHaveBeenCalled();
+      expect(result).toEqual(mockUsers);
+    });
   });
 
-  it('should throw "Method not implemented" for create', async () => {
-    const mockUser: User = {
-      id: '1',
-      email: 'test@example.com',
-      username: 'testuser',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  describe('create', () => {
+    it('should create user with valid data', async () => {
+      const mockUser: User = {
+        id: '1',
+        email: 'test@example.com',
+        username: 'testuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockUserRepository.create.mockResolvedValue(mockUser);
 
-    await expect(userService.create(mockUser)).rejects.toThrow(
-      'Method not implemented',
-    );
+      const result = await userService.create(mockUser);
+
+      expect(mockUserRepository.create).toHaveBeenCalledWith(mockUser);
+      expect(result).toEqual(mockUser);
+    });
+
+    it('should throw error for missing email', async () => {
+      const mockUser: User = {
+        id: '1',
+        email: '',
+        username: 'testuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(userService.create(mockUser)).rejects.toThrow('Email and username are required');
+    });
+
+    it('should throw error for invalid email format', async () => {
+      const mockUser: User = {
+        id: '1',
+        email: 'invalid-email',
+        username: 'testuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(userService.create(mockUser)).rejects.toThrow('Invalid email format');
+    });
   });
 
-  it('should throw "Method not implemented" for update', async () => {
-    await expect(
-      userService.update('1', { email: 'new@example.com' }),
-    ).rejects.toThrow('Method not implemented');
+  describe('update', () => {
+    it('should throw NotFoundException for non-existent user', async () => {
+      mockUserRepository.findById.mockResolvedValue(null);
+
+      await expect(
+        userService.update('1', { email: 'new@example.com' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error for invalid email format', async () => {
+      const mockUser: User = {
+        id: '1',
+        email: 'test@example.com',
+        username: 'testuser',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockUserRepository.findById.mockResolvedValue(mockUser);
+
+      await expect(
+        userService.update('1', { email: 'invalid-email' }),
+      ).rejects.toThrow('Invalid email format');
+    });
   });
 
-  it('should throw "Method not implemented" for delete', async () => {
-    await expect(userService.delete('1')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('delete', () => {
+    it('should throw NotFoundException for non-existent user', async () => {
+      mockUserRepository.findById.mockResolvedValue(null);
+
+      await expect(userService.delete('1')).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error for invalid ID', async () => {
+      await expect(userService.delete('')).rejects.toThrow('Invalid user ID provided');
+    });
   });
 });

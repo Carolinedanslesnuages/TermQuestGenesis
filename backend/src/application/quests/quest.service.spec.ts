@@ -1,6 +1,7 @@
 import { QuestService } from './quest.service';
 import { QuestRepository } from '../../infrastructure/quests/quest.repository';
 import { Quest } from '../../domain/quests/quest.entity';
+import { NotFoundException } from '@nestjs/common';
 
 describe('QuestService', () => {
   let questService: QuestService;
@@ -52,55 +53,159 @@ describe('QuestService', () => {
     expect(typeof questService.delete).toBe('function');
   });
 
-  it('should throw "Method not implemented" for findById', async () => {
-    await expect(questService.findById('1')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findById', () => {
+    it('should call repository findById and return quest', async () => {
+      const mockQuest: Quest = {
+        id: '1',
+        title: 'Test Quest',
+        description: 'Test description',
+        status: 'draft',
+        createdById: 'user1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockQuestRepository.findById.mockResolvedValue(mockQuest);
+
+      const result = await questService.findById('1');
+
+      expect(mockQuestRepository.findById).toHaveBeenCalledWith('1');
+      expect(result).toEqual(mockQuest);
+    });
+
+    it('should throw error for invalid ID', async () => {
+      await expect(questService.findById('')).rejects.toThrow('Invalid quest ID provided');
+    });
   });
 
-  it('should throw "Method not implemented" for findAll', async () => {
-    await expect(questService.findAll()).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findAll', () => {
+    it('should call repository findAll and return quests', async () => {
+      const mockQuests: Quest[] = [];
+      mockQuestRepository.findAll.mockResolvedValue(mockQuests);
+
+      const result = await questService.findAll();
+
+      expect(mockQuestRepository.findAll).toHaveBeenCalled();
+      expect(result).toEqual(mockQuests);
+    });
   });
 
-  it('should throw "Method not implemented" for findByStatus', async () => {
-    await expect(questService.findByStatus('draft')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findByStatus', () => {
+    it('should call repository findByStatus with valid status', async () => {
+      const mockQuests: Quest[] = [];
+      mockQuestRepository.findByStatus.mockResolvedValue(mockQuests);
+
+      const result = await questService.findByStatus('draft');
+
+      expect(mockQuestRepository.findByStatus).toHaveBeenCalledWith('draft');
+      expect(result).toEqual(mockQuests);
+    });
+
+    it('should throw error for invalid status', async () => {
+      await expect(questService.findByStatus('invalid' as any)).rejects.toThrow('Invalid quest status provided');
+    });
   });
 
-  it('should throw "Method not implemented" for findByUserId', async () => {
-    await expect(questService.findByUserId('user1')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('findByUserId', () => {
+    it('should call repository findByUserId with valid user ID', async () => {
+      const mockQuests: Quest[] = [];
+      mockQuestRepository.findByUserId.mockResolvedValue(mockQuests);
+
+      const result = await questService.findByUserId('user1');
+
+      expect(mockQuestRepository.findByUserId).toHaveBeenCalledWith('user1');
+      expect(result).toEqual(mockQuests);
+    });
+
+    it('should throw error for invalid user ID', async () => {
+      await expect(questService.findByUserId('')).rejects.toThrow('Invalid user ID provided');
+    });
   });
 
-  it('should throw "Method not implemented" for create', async () => {
-    const mockQuest: Quest = {
-      id: '1',
-      title: 'Test Quest',
-      description: 'Test description',
-      status: 'draft',
-      createdById: 'user1',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  describe('create', () => {
+    it('should create quest with valid data', async () => {
+      const mockQuest: Quest = {
+        id: '1',
+        title: 'Test Quest',
+        description: 'Test description for the quest',
+        status: 'draft',
+        createdById: 'user1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockQuestRepository.create.mockResolvedValue(mockQuest);
 
-    await expect(questService.create(mockQuest)).rejects.toThrow(
-      'Method not implemented',
-    );
+      const result = await questService.create(mockQuest);
+
+      expect(mockQuestRepository.create).toHaveBeenCalledWith(mockQuest);
+      expect(result).toEqual(mockQuest);
+    });
+
+    it('should throw error for missing required fields', async () => {
+      const mockQuest: Quest = {
+        id: '1',
+        title: '',
+        description: 'Test description',
+        status: 'draft',
+        createdById: 'user1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(questService.create(mockQuest)).rejects.toThrow('Title, description, and createdById are required');
+    });
+
+    it('should throw error for short title', async () => {
+      const mockQuest: Quest = {
+        id: '1',
+        title: 'AB',
+        description: 'Test description for the quest',
+        status: 'draft',
+        createdById: 'user1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(questService.create(mockQuest)).rejects.toThrow('Quest title must be at least 3 characters long');
+    });
+
+    it('should throw error for short description', async () => {
+      const mockQuest: Quest = {
+        id: '1',
+        title: 'Test Quest',
+        description: 'Short',
+        status: 'draft',
+        createdById: 'user1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(questService.create(mockQuest)).rejects.toThrow('Quest description must be at least 10 characters long');
+    });
   });
 
-  it('should throw "Method not implemented" for update', async () => {
-    await expect(
-      questService.update('1', { title: 'Updated Quest' }),
-    ).rejects.toThrow('Method not implemented');
+  describe('update', () => {
+    it('should throw NotFoundException for non-existent quest', async () => {
+      mockQuestRepository.findById.mockResolvedValue(null);
+
+      await expect(
+        questService.update('1', { title: 'Updated Quest' }),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error for invalid ID', async () => {
+      await expect(questService.update('', { title: 'Updated Quest' })).rejects.toThrow('Invalid quest ID provided');
+    });
   });
 
-  it('should throw "Method not implemented" for delete', async () => {
-    await expect(questService.delete('1')).rejects.toThrow(
-      'Method not implemented',
-    );
+  describe('delete', () => {
+    it('should throw NotFoundException for non-existent quest', async () => {
+      mockQuestRepository.findById.mockResolvedValue(null);
+
+      await expect(questService.delete('1')).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error for invalid ID', async () => {
+      await expect(questService.delete('')).rejects.toThrow('Invalid quest ID provided');
+    });
   });
 });
