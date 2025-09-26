@@ -94,6 +94,30 @@ npm run dev
 
 The frontend application will be available at `http://localhost:3001`.
 
+### Docker Setup (Recommended)
+
+For a complete setup with PostgreSQL database:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd TermQuestGenesis
+
+# Start all services with Docker Compose
+docker compose up -d
+
+# View running services
+docker compose ps
+
+# Stop all services
+docker compose down
+```
+
+This will start:
+- **Backend API**: `http://localhost:3000`
+- **Frontend App**: `http://localhost:3001`
+- **PostgreSQL Database**: `localhost:5432`
+
 ## 🎯 Available Scripts
 
 ### Backend Scripts
@@ -173,6 +197,11 @@ This is the initial project scaffold. The following are implemented:
 - Presentation layer with Vue components
 - Clean component architecture with proper separation
 
+✅ **Development Infrastructure**
+- Docker containerization for backend and frontend
+- Docker Compose setup with PostgreSQL database
+- GitHub Actions CI/CD pipeline for automated testing and building
+
 ## 🔄 Next Steps
 
 The current implementation provides a solid foundation for development. Future enhancements might include:
@@ -182,8 +211,6 @@ The current implementation provides a solid foundation for development. Future e
 - Advanced quest features (deadlines, rewards, dependencies)
 - Real-time updates with WebSockets
 - Unit and integration tests
-- Docker containerization
-- CI/CD pipeline setup
 
 ## 🤝 Contributing
 
