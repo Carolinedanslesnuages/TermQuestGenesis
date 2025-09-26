@@ -18,6 +18,7 @@ export default defineConfig({
       "@presentation": fileURLToPath(
         new URL("./src/presentation", import.meta.url),
       ),
+      "@store": fileURLToPath(new URL("./src/store", import.meta.url)),
     },
   },
 });

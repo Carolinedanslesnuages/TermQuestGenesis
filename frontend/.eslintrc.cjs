@@ -15,4 +15,13 @@ module.exports = {
   env: {
     "vue/setup-compiler-macros": true,
   },
+  rules: {
+    // Allow single-word component names for pages and layout components
+    "vue/multi-word-component-names": [
+      "error",
+      {
+        ignores: ["Home", "Layout", "NotFound"],
+      },
+    ],
+  },
 };
