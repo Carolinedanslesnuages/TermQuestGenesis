@@ -48,3 +48,47 @@ export interface UpdateUserData {
   email?: string;
   username?: string;
 }
+
+/**
+ * User badge interface
+ * Represents achievements or milestones earned by the user
+ */
+export interface UserBadge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  earnedAt: Date;
+}
+
+/**
+ * Player profile interface
+ * Extended user information with gaming-related data
+ */
+export interface PlayerProfile {
+  userId: string;
+  level: number;
+  experience: number;
+  experienceToNextLevel: number;
+  totalQuestsCompleted: number;
+  activeQuestsCount: number;
+  achievements: UserBadge[];
+  avatar?: string;
+  joinedAt: Date;
+  lastActiveAt: Date;
+}
+
+/**
+ * Player stats interface
+ * Statistical information about player progress
+ */
+export interface PlayerStats {
+  totalQuests: number;
+  completedQuests: number;
+  activeQuests: number;
+  draftQuests: number;
+  completionRate: number;
+  averageTimeToComplete: number; // in hours
+  longestStreak: number;
+  currentStreak: number;
+}

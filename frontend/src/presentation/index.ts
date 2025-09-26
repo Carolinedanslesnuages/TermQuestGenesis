@@ -5,9 +5,13 @@
 
 // Components
 export { default as Layout } from "./components/Layout.vue";
+export { default as ConsoleToast } from "./components/ConsoleToast.vue";
 
 // Pages
 export { default as Home } from "./pages/Home.vue";
+export { default as Dashboard } from "./pages/Dashboard.vue";
+export { default as Profile } from "./pages/Profile.vue";
+export { default as QuestDetail } from "./pages/QuestDetail.vue";
 export { default as NotFound } from "./pages/NotFound.vue";
 
 // User components

@@ -16,11 +16,25 @@
           <router-link to="/" class="layout__nav-link" @click="closeMenu">
             Home
           </router-link>
-          <router-link to="/users" class="layout__nav-link" @click="closeMenu">
-            Users
+          <router-link
+            to="/dashboard"
+            class="layout__nav-link"
+            @click="closeMenu"
+          >
+            Dashboard
           </router-link>
           <router-link to="/quests" class="layout__nav-link" @click="closeMenu">
             Quests
+          </router-link>
+          <router-link
+            to="/profile"
+            class="layout__nav-link"
+            @click="closeMenu"
+          >
+            Profile
+          </router-link>
+          <router-link to="/users" class="layout__nav-link" @click="closeMenu">
+            Users
           </router-link>
         </div>
 
@@ -45,6 +59,16 @@
       </router-view>
     </main>
 
+    <!-- Toast Container -->
+    <div class="layout__toast-container">
+      <ConsoleToast
+        v-for="toast in toastStore.toasts"
+        :key="toast.id"
+        :toast="toast"
+        @close="toastStore.removeToast(toast.id)"
+      />
+    </div>
+
     <!-- Footer -->
     <footer class="layout__footer">
       <div class="layout__footer-content">
@@ -68,6 +92,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useToastStore } from "@/store/toastStore";
+import ConsoleToast from "./ConsoleToast.vue";
+
+const toastStore = useToastStore();
 
 const isMenuOpen = ref(false);
 
@@ -289,6 +317,28 @@ const closeMenu = () => {
 
   .layout__main {
     padding: 0;
+  }
+}
+
+/* Toast Container */
+.layout__toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.layout__toast-container > * {
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .layout__toast-container {
+    left: 20px;
+    right: 20px;
+    max-width: none;
   }
 }
 </style>
