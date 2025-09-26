@@ -2,11 +2,15 @@ import {
   Controller,
   Get,
   Post,
+  Put,
+  Delete,
   Body,
   Param,
   Query,
   HttpStatus,
   HttpException,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -51,6 +55,9 @@ export class QuestController {
       }
       return await this.questService.findAll();
     } catch (error) {
+      if (error instanceof Error && error.message.includes('Invalid quest status')) {
+        throw new BadRequestException(error.message);
+      }
       throw new HttpException(
         'Failed to retrieve quests',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -73,12 +80,15 @@ export class QuestController {
     try {
       const quest = await this.questService.findById(id);
       if (!quest) {
-        throw new HttpException('Quest not found', HttpStatus.NOT_FOUND);
+        throw new NotFoundException('Quest not found');
       }
       return quest;
     } catch (error) {
-      if (error instanceof HttpException) {
+      if (error instanceof NotFoundException) {
         throw error;
+      }
+      if (error instanceof Error && error.message.includes('Invalid quest ID')) {
+        throw new BadRequestException(error.message);
       }
       throw new HttpException(
         'Failed to retrieve quest',
@@ -104,6 +114,9 @@ export class QuestController {
     try {
       return await this.questService.findByUserId(userId);
     } catch (error) {
+      if (error instanceof Error && error.message.includes('Invalid user ID')) {
+        throw new BadRequestException(error.message);
+      }
       throw new HttpException(
         'Failed to retrieve user quests',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -146,7 +159,77 @@ export class QuestController {
     try {
       return await this.questService.create(quest);
     } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      }
       throw new HttpException('Failed to create quest', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  /**
+   * Update an existing quest
+   */
+  @Put(':id')
+  @ApiOperation({
+    summary: 'Update quest',
+    description: 'Update an existing quest',
+  })
+  @ApiParam({ name: 'id', description: 'Unique quest identifier' })
+  @ApiBody({
+    description: 'Partial quest data',
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', description: 'Quest title' },
+        description: { type: 'string', description: 'Quest description' },
+        status: {
+          type: 'string',
+          enum: ['draft', 'active', 'completed', 'archived'],
+          description: 'Quest status',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Quest successfully updated' })
+  @ApiResponse({ status: 400, description: 'Invalid quest data' })
+  @ApiResponse({ status: 404, description: 'Quest not found' })
+  async update(@Param('id') id: string, @Body() quest: Partial<Quest>): Promise<Quest> {
+    try {
+      return await this.questService.update(id, quest);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      }
+      throw new HttpException('Failed to update quest', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * Delete a quest
+   */
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete quest',
+    description: 'Delete an existing quest',
+  })
+  @ApiParam({ name: 'id', description: 'Unique quest identifier' })
+  @ApiResponse({ status: 200, description: 'Quest successfully deleted' })
+  @ApiResponse({ status: 400, description: 'Invalid quest ID' })
+  @ApiResponse({ status: 404, description: 'Quest not found' })
+  async delete(@Param('id') id: string): Promise<void> {
+    try {
+      await this.questService.delete(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      if (error instanceof Error && error.message.includes('Invalid quest ID')) {
+        throw new BadRequestException(error.message);
+      }
+      throw new HttpException('Failed to delete quest', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
