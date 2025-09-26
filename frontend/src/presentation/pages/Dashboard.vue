@@ -170,6 +170,10 @@
     <!-- Quick Actions -->
     <section class="dashboard__actions">
       <div class="action-buttons">
+        <router-link to="/console" class="action-button action-button--featured">
+          <span class="action-button__icon">💻</span>
+          <span class="action-button__text">Terminal Quest</span>
+        </router-link>
         <router-link to="/quests" class="action-button action-button--primary">
           <span class="action-button__icon">🎯</span>
           <span class="action-button__text">Browse Quests</span>
@@ -584,6 +588,26 @@ onMounted(async () => {
 .action-button--primary {
   border-color: #00ff00;
   background: rgba(0, 255, 0, 0.1);
+}
+
+.action-button--featured {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
+  animation: pulse 2s infinite;
+}
+
+.action-button--featured:hover {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+  transform: translateY(-2px);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(255, 107, 107, 0.4); }
+  100% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.2); }
 }
 
 .action-button--secondary {
