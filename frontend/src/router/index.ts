@@ -3,6 +3,9 @@ import type { RouteRecordRaw } from "vue-router";
 
 // Import components
 import Home from "@presentation/pages/Home.vue";
+import Dashboard from "@presentation/pages/Dashboard.vue";
+import Profile from "@presentation/pages/Profile.vue";
+import QuestDetail from "@presentation/pages/QuestDetail.vue";
 import UserList from "@presentation/users/UserList.vue";
 import QuestList from "@presentation/quests/QuestList.vue";
 
@@ -20,6 +23,22 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: {
+      title: "Dashboard - TermQuestGenesis",
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    meta: {
+      title: "Profile - TermQuestGenesis",
+    },
+  },
+  {
     path: "/users",
     name: "Users",
     component: UserList,
@@ -33,6 +52,14 @@ const routes: RouteRecordRaw[] = [
     component: QuestList,
     meta: {
       title: "Quests - TermQuestGenesis",
+    },
+  },
+  {
+    path: "/quests/:id",
+    name: "QuestDetail",
+    component: QuestDetail,
+    meta: {
+      title: "Quest Details - TermQuestGenesis",
     },
   },
   // Catch-all route for 404s
