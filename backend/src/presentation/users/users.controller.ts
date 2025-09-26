@@ -1,6 +1,17 @@
-import { Controller, Get, Post, Body, Param, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserService, CreateUserDto } from '@application/users/create-user.service';
+import {
+  CreateUserService,
+  CreateUserDto,
+} from '@application/users/create-user.service';
 import { GetUserService } from '@application/users/get-user.service';
 
 @ApiTags('users')
@@ -8,7 +19,7 @@ import { GetUserService } from '@application/users/get-user.service';
 export class UsersController {
   constructor(
     private readonly createUserService: CreateUserService,
-    private readonly getUserService: GetUserService
+    private readonly getUserService: GetUserService,
   ) {}
 
   @Post()

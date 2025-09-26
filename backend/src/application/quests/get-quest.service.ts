@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Quest, QuestStatus } from '@domain/quests/quest.entity';
 import { IQuestRepository } from '@domain/quests/quest.repository.interface';
 
 @Injectable()
 export class GetQuestService {
-  constructor(private readonly questRepository: IQuestRepository) {}
+  constructor(
+    @Inject('IQuestRepository')
+    private readonly questRepository: IQuestRepository,
+  ) {}
 
   async byId(id: string): Promise<Quest | null> {
     return await this.questRepository.findById(id);

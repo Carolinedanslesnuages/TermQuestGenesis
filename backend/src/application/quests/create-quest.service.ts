@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Quest } from '@domain/quests/quest.entity';
 import { IQuestRepository } from '@domain/quests/quest.repository.interface';
 import { IUserRepository } from '@domain/users/user.repository.interface';
@@ -12,8 +12,9 @@ export interface CreateQuestDto {
 @Injectable()
 export class CreateQuestService {
   constructor(
+    @Inject('IQuestRepository')
     private readonly questRepository: IQuestRepository,
-    private readonly userRepository: IUserRepository
+    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
   ) {}
 
   async execute(dto: CreateQuestDto): Promise<Quest> {

@@ -1,5 +1,5 @@
-import { ref, reactive } from 'vue';
-import { User, CreateUserRequest } from '@domain/users/user.model';
+import { ref } from 'vue';
+import type { User, CreateUserRequest } from '@domain/users/user.model';
 import { UserApi } from '@infrastructure/users/user.api';
 
 const userApi = new UserApi();

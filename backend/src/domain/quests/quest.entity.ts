@@ -2,7 +2,7 @@ export enum QuestStatus {
   DRAFT = 'draft',
   ACTIVE = 'active',
   COMPLETED = 'completed',
-  ARCHIVED = 'archived'
+  ARCHIVED = 'archived',
 }
 
 export class Quest {
@@ -13,10 +13,14 @@ export class Quest {
     public readonly status: QuestStatus,
     public readonly createdById: string,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
-  static create(title: string, description: string, createdById: string): Quest {
+  static create(
+    title: string,
+    description: string,
+    createdById: string,
+  ): Quest {
     const now = new Date();
     return new Quest(
       generateId(),
@@ -25,7 +29,7 @@ export class Quest {
       QuestStatus.DRAFT,
       createdById,
       now,
-      now
+      now,
     );
   }
 
@@ -37,7 +41,7 @@ export class Quest {
       QuestStatus.ACTIVE,
       this.createdById,
       this.createdAt,
-      new Date()
+      new Date(),
     );
   }
 
@@ -52,7 +56,7 @@ export class Quest {
       QuestStatus.COMPLETED,
       this.createdById,
       this.createdAt,
-      new Date()
+      new Date(),
     );
   }
 }

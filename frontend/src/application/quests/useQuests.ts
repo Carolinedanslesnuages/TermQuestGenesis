@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { Quest, QuestStatus, CreateQuestRequest } from '@domain/quests/quest.model';
+import type { Quest, CreateQuestRequest } from '@domain/quests/quest.model';
+import { QuestStatus } from '@domain/quests/quest.model';
 import { QuestApi } from '@infrastructure/quests/quest.api';
 
 const questApi = new QuestApi();

@@ -4,7 +4,7 @@ export class User {
     public readonly email: string,
     public readonly username: string,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   static create(email: string, username: string): User {
@@ -14,7 +14,7 @@ export class User {
       email,
       username,
       now,
-      now
+      now,
     );
   }
 
@@ -24,7 +24,7 @@ export class User {
       this.email,
       newUsername,
       this.createdAt,
-      new Date()
+      new Date(),
     );
   }
 }

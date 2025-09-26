@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, CreateUserRequest } from '@domain/users/user.model';
+import type { User, CreateUserRequest } from '@domain/users/user.model';
 
 const API_BASE_URL = 'http://localhost:3000';
 

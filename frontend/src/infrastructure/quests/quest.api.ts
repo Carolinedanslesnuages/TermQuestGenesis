@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { Quest, QuestStatus, CreateQuestRequest } from '@domain/quests/quest.model';
+import type { Quest, CreateQuestRequest } from '@domain/quests/quest.model';
+import { QuestStatus } from '@domain/quests/quest.model';
 
 const API_BASE_URL = 'http://localhost:3000';
 

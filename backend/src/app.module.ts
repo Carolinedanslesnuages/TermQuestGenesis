@@ -7,8 +7,10 @@ import { CreateQuestService } from '@application/quests/create-quest.service';
 import { GetQuestService } from '@application/quests/get-quest.service';
 import { UserRepository } from '@infrastructure/users/user.repository';
 import { QuestRepository } from '@infrastructure/quests/quest.repository';
-import { IUserRepository } from '@domain/users/user.repository.interface';
-import { IQuestRepository } from '@domain/quests/quest.repository.interface';
+
+// Create tokens for the interfaces
+const USER_REPOSITORY_TOKEN = 'IUserRepository';
+const QUEST_REPOSITORY_TOKEN = 'IQuestRepository';
 
 @Module({
   controllers: [UsersController, QuestsController],
@@ -20,11 +22,11 @@ import { IQuestRepository } from '@domain/quests/quest.repository.interface';
     GetQuestService,
     // Repository implementations
     {
-      provide: IUserRepository,
+      provide: USER_REPOSITORY_TOKEN,
       useClass: UserRepository,
     },
     {
-      provide: IQuestRepository,
+      provide: QUEST_REPOSITORY_TOKEN,
       useClass: QuestRepository,
     },
   ],

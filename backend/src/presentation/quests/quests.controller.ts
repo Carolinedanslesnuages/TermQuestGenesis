@@ -1,6 +1,18 @@
-import { Controller, Get, Post, Body, Param, Query, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
-import { CreateQuestService, CreateQuestDto } from '@application/quests/create-quest.service';
+import {
+  CreateQuestService,
+  CreateQuestDto,
+} from '@application/quests/create-quest.service';
 import { GetQuestService } from '@application/quests/get-quest.service';
 import { QuestStatus } from '@domain/quests/quest.entity';
 
@@ -9,7 +21,7 @@ import { QuestStatus } from '@domain/quests/quest.entity';
 export class QuestsController {
   constructor(
     private readonly createQuestService: CreateQuestService,
-    private readonly getQuestService: GetQuestService
+    private readonly getQuestService: GetQuestService,
   ) {}
 
   @Post()
@@ -49,7 +61,10 @@ export class QuestsController {
 
   @Get('user/:userId')
   @ApiOperation({ summary: 'Get quests by user ID' })
-  @ApiResponse({ status: 200, description: 'User quests retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'User quests retrieved successfully',
+  })
   async findByUser(@Param('userId') userId: string) {
     return await this.getQuestService.byCreatedById(userId);
   }

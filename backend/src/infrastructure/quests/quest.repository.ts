@@ -9,19 +9,19 @@ export class QuestRepository implements IQuestRepository {
   private quests: Quest[] = [];
 
   async findById(id: string): Promise<Quest | null> {
-    return this.quests.find(quest => quest.id === id) || null;
+    return this.quests.find((quest) => quest.id === id) || null;
   }
 
   async findByStatus(status: QuestStatus): Promise<Quest[]> {
-    return this.quests.filter(quest => quest.status === status);
+    return this.quests.filter((quest) => quest.status === status);
   }
 
   async findByCreatedById(createdById: string): Promise<Quest[]> {
-    return this.quests.filter(quest => quest.createdById === createdById);
+    return this.quests.filter((quest) => quest.createdById === createdById);
   }
 
   async save(quest: Quest): Promise<Quest> {
-    const existingIndex = this.quests.findIndex(q => q.id === quest.id);
+    const existingIndex = this.quests.findIndex((q) => q.id === quest.id);
     if (existingIndex >= 0) {
       this.quests[existingIndex] = quest;
     } else {
@@ -31,7 +31,7 @@ export class QuestRepository implements IQuestRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.quests = this.quests.filter(quest => quest.id !== id);
+    this.quests = this.quests.filter((quest) => quest.id !== id);
   }
 
   async findAll(): Promise<Quest[]> {
