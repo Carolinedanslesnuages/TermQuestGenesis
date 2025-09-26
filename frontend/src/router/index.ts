@@ -8,6 +8,7 @@ import Profile from "@presentation/pages/Profile.vue";
 import QuestDetail from "@presentation/pages/QuestDetail.vue";
 import UserList from "@presentation/users/UserList.vue";
 import QuestList from "@presentation/quests/QuestList.vue";
+import ConsoleQuest from "@presentation/components/ConsoleQuest.vue";
 
 /**
  * Vue Router configuration
@@ -60,6 +61,14 @@ const routes: RouteRecordRaw[] = [
     component: QuestDetail,
     meta: {
       title: "Quest Details - TermQuestGenesis",
+    },
+  },
+  {
+    path: "/console",
+    name: "ConsoleQuest",
+    component: ConsoleQuest,
+    meta: {
+      title: "Terminal Quest - TermQuestGenesis",
     },
   },
   // Catch-all route for 404s
