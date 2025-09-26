@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { User } from '../../domain/users/user.entity';
 import { UserRepository } from '../../infrastructure/users/user.repository';
 
@@ -8,7 +8,9 @@ import { UserRepository } from '../../infrastructure/users/user.repository';
  */
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @Inject('UserRepository') private readonly userRepository: UserRepository,
+  ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   /**

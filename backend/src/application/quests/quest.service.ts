@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Quest, QuestStatus } from '../../domain/quests/quest.entity';
 import { QuestRepository } from '../../infrastructure/quests/quest.repository';
 
@@ -8,7 +8,10 @@ import { QuestRepository } from '../../infrastructure/quests/quest.repository';
  */
 @Injectable()
 export class QuestService {
-  constructor(private readonly questRepository: QuestRepository) {}
+  constructor(
+    @Inject('QuestRepository')
+    private readonly questRepository: QuestRepository,
+  ) {}
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   /**
