@@ -168,6 +168,13 @@ docker compose logs backend
 docker compose down
 ```
 
+### Dockerfile Features
+
+- **Base Image**: Uses official Node.js 18 image for full compatibility
+- **Prisma Integration**: Automatically generates Prisma client during build
+- **Production Optimized**: Uses `npm ci --only=production` for clean installs
+- **Multi-stage Ready**: Built for efficient production deployments
+
 ## 🔒 Production Considerations
 
 - **Environment Variables**: Ensure all sensitive configuration is via environment variables
