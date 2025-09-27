@@ -16,9 +16,9 @@ export class QuestRepositoryImpl implements QuestRepository {
   ) {}
 
   async findById(id: string): Promise<Quest | null> {
-    const quest = await this.questRepository.findOne({ 
+    const quest = await this.questRepository.findOne({
       where: { id },
-      relations: ['createdBy']
+      relations: ['createdBy'],
     });
     return quest || null;
   }
@@ -26,7 +26,7 @@ export class QuestRepositoryImpl implements QuestRepository {
   async findAll(): Promise<Quest[]> {
     return await this.questRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['createdBy']
+      relations: ['createdBy'],
     });
   }
 
@@ -34,7 +34,7 @@ export class QuestRepositoryImpl implements QuestRepository {
     return await this.questRepository.find({
       where: { status },
       order: { createdAt: 'DESC' },
-      relations: ['createdBy']
+      relations: ['createdBy'],
     });
   }
 
@@ -42,7 +42,7 @@ export class QuestRepositoryImpl implements QuestRepository {
     return await this.questRepository.find({
       where: { createdById: userId },
       order: { createdAt: 'DESC' },
-      relations: ['createdBy']
+      relations: ['createdBy'],
     });
   }
 
@@ -53,9 +53,9 @@ export class QuestRepositoryImpl implements QuestRepository {
 
   async update(id: string, quest: Partial<Quest>): Promise<Quest> {
     await this.questRepository.update(id, quest);
-    const updatedQuest = await this.questRepository.findOne({ 
+    const updatedQuest = await this.questRepository.findOne({
       where: { id },
-      relations: ['createdBy']
+      relations: ['createdBy'],
     });
     if (!updatedQuest) {
       throw new Error(`Quest with id ${id} not found`);

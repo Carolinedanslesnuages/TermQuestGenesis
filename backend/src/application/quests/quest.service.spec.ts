@@ -73,7 +73,9 @@ describe('QuestService', () => {
     });
 
     it('should throw error for invalid ID', async () => {
-      await expect(questService.findById('')).rejects.toThrow('Invalid quest ID provided');
+      await expect(questService.findById('')).rejects.toThrow(
+        'Invalid quest ID provided',
+      );
     });
   });
 
@@ -101,7 +103,9 @@ describe('QuestService', () => {
     });
 
     it('should throw error for invalid status', async () => {
-      await expect(questService.findByStatus('invalid' as any)).rejects.toThrow('Invalid quest status provided');
+      await expect(questService.findByStatus('invalid' as any)).rejects.toThrow(
+        'Invalid quest status provided',
+      );
     });
   });
 
@@ -117,7 +121,9 @@ describe('QuestService', () => {
     });
 
     it('should throw error for invalid user ID', async () => {
-      await expect(questService.findByUserId('')).rejects.toThrow('Invalid user ID provided');
+      await expect(questService.findByUserId('')).rejects.toThrow(
+        'Invalid user ID provided',
+      );
     });
   });
 
@@ -151,7 +157,9 @@ describe('QuestService', () => {
         updatedAt: new Date(),
       };
 
-      await expect(questService.create(mockQuest)).rejects.toThrow('Title, description, and createdById are required');
+      await expect(questService.create(mockQuest)).rejects.toThrow(
+        'Title, description, and createdById are required',
+      );
     });
 
     it('should throw error for short title', async () => {
@@ -165,7 +173,9 @@ describe('QuestService', () => {
         updatedAt: new Date(),
       };
 
-      await expect(questService.create(mockQuest)).rejects.toThrow('Quest title must be at least 3 characters long');
+      await expect(questService.create(mockQuest)).rejects.toThrow(
+        'Quest title must be at least 3 characters long',
+      );
     });
 
     it('should throw error for short description', async () => {
@@ -179,7 +189,9 @@ describe('QuestService', () => {
         updatedAt: new Date(),
       };
 
-      await expect(questService.create(mockQuest)).rejects.toThrow('Quest description must be at least 10 characters long');
+      await expect(questService.create(mockQuest)).rejects.toThrow(
+        'Quest description must be at least 10 characters long',
+      );
     });
   });
 
@@ -193,7 +205,9 @@ describe('QuestService', () => {
     });
 
     it('should throw error for invalid ID', async () => {
-      await expect(questService.update('', { title: 'Updated Quest' })).rejects.toThrow('Invalid quest ID provided');
+      await expect(
+        questService.update('', { title: 'Updated Quest' }),
+      ).rejects.toThrow('Invalid quest ID provided');
     });
   });
 
@@ -205,7 +219,9 @@ describe('QuestService', () => {
     });
 
     it('should throw error for invalid ID', async () => {
-      await expect(questService.delete('')).rejects.toThrow('Invalid quest ID provided');
+      await expect(questService.delete('')).rejects.toThrow(
+        'Invalid quest ID provided',
+      );
     });
   });
 });

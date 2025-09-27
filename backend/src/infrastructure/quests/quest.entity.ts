@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Quest, QuestStatus } from '../../domain/quests/quest.entity';
 import { UserEntity } from '../users/user.entity';
 
@@ -20,7 +28,7 @@ export class QuestEntity implements Quest {
   @Column({
     type: 'enum',
     enum: ['draft', 'active', 'completed', 'archived'],
-    default: 'draft'
+    default: 'draft',
   })
   status: QuestStatus;
 

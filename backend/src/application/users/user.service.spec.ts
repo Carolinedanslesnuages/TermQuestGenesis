@@ -1,7 +1,7 @@
 import { UserService } from './user.service';
 import { UserRepository } from '../../infrastructure/users/user.repository';
 import { User } from '../../domain/users/user.entity';
-import { NotFoundException, ConflictException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -61,7 +61,9 @@ describe('UserService', () => {
     });
 
     it('should throw error for invalid ID', async () => {
-      await expect(userService.findById('')).rejects.toThrow('Invalid user ID provided');
+      await expect(userService.findById('')).rejects.toThrow(
+        'Invalid user ID provided',
+      );
     });
   });
 
@@ -103,7 +105,9 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      await expect(userService.create(mockUser)).rejects.toThrow('Email and username are required');
+      await expect(userService.create(mockUser)).rejects.toThrow(
+        'Email and username are required',
+      );
     });
 
     it('should throw error for invalid email format', async () => {
@@ -115,7 +119,9 @@ describe('UserService', () => {
         updatedAt: new Date(),
       };
 
-      await expect(userService.create(mockUser)).rejects.toThrow('Invalid email format');
+      await expect(userService.create(mockUser)).rejects.toThrow(
+        'Invalid email format',
+      );
     });
   });
 
@@ -152,7 +158,9 @@ describe('UserService', () => {
     });
 
     it('should throw error for invalid ID', async () => {
-      await expect(userService.delete('')).rejects.toThrow('Invalid user ID provided');
+      await expect(userService.delete('')).rejects.toThrow(
+        'Invalid user ID provided',
+      );
     });
   });
 });

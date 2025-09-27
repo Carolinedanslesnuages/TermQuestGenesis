@@ -55,7 +55,10 @@ export class QuestController {
       }
       return await this.questService.findAll();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Invalid quest status')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Invalid quest status')
+      ) {
         throw new BadRequestException(error.message);
       }
       throw new HttpException(
@@ -87,7 +90,10 @@ export class QuestController {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      if (error instanceof Error && error.message.includes('Invalid quest ID')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Invalid quest ID')
+      ) {
         throw new BadRequestException(error.message);
       }
       throw new HttpException(
@@ -193,7 +199,10 @@ export class QuestController {
   @ApiResponse({ status: 200, description: 'Quest successfully updated' })
   @ApiResponse({ status: 400, description: 'Invalid quest data' })
   @ApiResponse({ status: 404, description: 'Quest not found' })
-  async update(@Param('id') id: string, @Body() quest: Partial<Quest>): Promise<Quest> {
+  async update(
+    @Param('id') id: string,
+    @Body() quest: Partial<Quest>,
+  ): Promise<Quest> {
     try {
       return await this.questService.update(id, quest);
     } catch (error) {
@@ -203,7 +212,10 @@ export class QuestController {
       if (error instanceof Error) {
         throw new BadRequestException(error.message);
       }
-      throw new HttpException('Failed to update quest', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to update quest',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -226,10 +238,16 @@ export class QuestController {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      if (error instanceof Error && error.message.includes('Invalid quest ID')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Invalid quest ID')
+      ) {
         throw new BadRequestException(error.message);
       }
-      throw new HttpException('Failed to delete quest', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to delete quest',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

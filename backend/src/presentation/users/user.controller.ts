@@ -143,17 +143,26 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Invalid user data' })
   @ApiResponse({ status: 404, description: 'User not found' })
   @ApiResponse({ status: 409, description: 'User already exists' })
-  async update(@Param('id') id: string, @Body() user: Partial<User>): Promise<User> {
+  async update(
+    @Param('id') id: string,
+    @Body() user: Partial<User>,
+  ): Promise<User> {
     try {
       return await this.userService.update(id, user);
     } catch (error) {
-      if (error instanceof NotFoundException || error instanceof ConflictException) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
         throw error;
       }
       if (error instanceof Error) {
         throw new BadRequestException(error.message);
       }
-      throw new HttpException('Failed to update user', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to update user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -179,7 +188,10 @@ export class UserController {
       if (error instanceof Error && error.message.includes('Invalid user ID')) {
         throw new BadRequestException(error.message);
       }
-      throw new HttpException('Failed to delete user', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Failed to delete user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
