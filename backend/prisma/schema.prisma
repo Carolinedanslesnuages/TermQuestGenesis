@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  username  String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  quests Quest[]
+
+  @@map("users")
+  @@index([email], name: "IDX_USERS_EMAIL")
+  @@index([username], name: "IDX_USERS_USERNAME")
+}
+
+model Quest {
+  id          String      @id @default(uuid()) @db.Uuid
+  title       String
+  description String      @db.Text
+  status      QuestStatus @default(draft)
+  createdById String      @map("created_by_id") @db.Uuid
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  @@map("quests")
+  @@index([status], name: "IDX_QUESTS_STATUS")
+  @@index([createdById], name: "IDX_QUESTS_CREATED_BY_ID")
+}
+
+enum QuestStatus {
+  draft
+  active
+  completed
+  archived
+
+  @@map("quests_status_enum")
+}
