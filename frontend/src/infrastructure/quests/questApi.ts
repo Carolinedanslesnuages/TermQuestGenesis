@@ -1,3 +1,4 @@
+import { apiClient } from "@infrastructure/apiClient";
 import axios from "axios";
 import type {
   Quest,
@@ -31,7 +32,7 @@ export class QuestApi {
     const url = params.toString()
       ? `${QUEST_API_BASE}?${params.toString()}`
       : QUEST_API_BASE;
-    const response = await axios.get<Quest[]>(url);
+    const response = await apiClient.get<Quest[]>(url);
     return response.data;
   }
 
@@ -42,7 +43,7 @@ export class QuestApi {
    */
   static async getQuestById(id: string): Promise<Quest | null> {
     try {
-      const response = await axios.get<Quest>(`${QUEST_API_BASE}/${id}`);
+      const response = await apiClient.get<Quest>(`${QUEST_API_BASE}/${id}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -58,7 +59,7 @@ export class QuestApi {
    * @returns Promise that resolves to an array of quests with the specified status
    */
   static async getQuestsByStatus(status: QuestStatus): Promise<Quest[]> {
-    const response = await axios.get<Quest[]>(
+    const response = await apiClient.get<Quest[]>(
       `${QUEST_API_BASE}?status=${status}`,
     );
     return response.data;
@@ -70,7 +71,7 @@ export class QuestApi {
    * @returns Promise that resolves to an array of quests created by the user
    */
   static async getQuestsByUserId(userId: string): Promise<Quest[]> {
-    const response = await axios.get<Quest[]>(
+    const response = await apiClient.get<Quest[]>(
       `${QUEST_API_BASE}/user/${userId}`,
     );
     return response.data;
@@ -82,7 +83,7 @@ export class QuestApi {
    * @returns Promise that resolves to the created quest
    */
   static async createQuest(questData: CreateQuestData): Promise<Quest> {
-    const response = await axios.post<Quest>(QUEST_API_BASE, questData);
+    const response = await apiClient.post<Quest>(QUEST_API_BASE, questData);
     return response.data;
   }
 
@@ -96,7 +97,7 @@ export class QuestApi {
     id: string,
     questData: UpdateQuestData,
   ): Promise<Quest> {
-    const response = await axios.put<Quest>(
+    const response = await apiClient.put<Quest>(
       `${QUEST_API_BASE}/${id}`,
       questData,
     );
@@ -109,6 +110,6 @@ export class QuestApi {
    * @returns Promise that resolves when the quest is deleted
    */
   static async deleteQuest(id: string): Promise<void> {
-    await axios.delete(`${QUEST_API_BASE}/${id}`);
+    await apiClient.delete(`${QUEST_API_BASE}/${id}`);
   }
 }

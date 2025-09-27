@@ -211,7 +211,25 @@ The frontend is designed to work with the TermQuestGenesis backend API. API clie
 
 ### Environment Configuration
 
-Configure the API base URL through environment variables or by modifying the API client base URLs in the infrastructure layer.
+The frontend uses a centralized Axios client configured through environment variables:
+
+1. **Create environment file** (copy from example):
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure API URL** in `.env`:
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
+
+3. **API Client Features**:
+   - Centralized configuration in `src/infrastructure/apiClient.ts`
+   - Automatic baseURL configuration from `VITE_API_URL`
+   - Development mode request/response logging
+   - Consistent error handling across all API calls
+
+**Default Configuration**: If `VITE_API_URL` is not set, the client defaults to `http://localhost:3000` (backend port).
 
 ## 🚧 Development Guidelines
 

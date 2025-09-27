@@ -1,3 +1,4 @@
+import { apiClient } from "@infrastructure/apiClient";
 import axios from "axios";
 import type { User, CreateUserData, UpdateUserData } from "@domain/users/user";
 
@@ -16,7 +17,7 @@ export class UserApi {
    * @returns Promise that resolves to an array of all users
    */
   static async getAllUsers(): Promise<User[]> {
-    const response = await axios.get<User[]>(USER_API_BASE);
+    const response = await apiClient.get<User[]>(USER_API_BASE);
     return response.data;
   }
 
@@ -27,7 +28,7 @@ export class UserApi {
    */
   static async getUserById(id: string): Promise<User | null> {
     try {
-      const response = await axios.get<User>(`${USER_API_BASE}/${id}`);
+      const response = await apiClient.get<User>(`${USER_API_BASE}/${id}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -43,7 +44,7 @@ export class UserApi {
    * @returns Promise that resolves to the created user
    */
   static async createUser(userData: CreateUserData): Promise<User> {
-    const response = await axios.post<User>(USER_API_BASE, userData);
+    const response = await apiClient.post<User>(USER_API_BASE, userData);
     return response.data;
   }
 
@@ -54,7 +55,7 @@ export class UserApi {
    * @returns Promise that resolves to the updated user
    */
   static async updateUser(id: string, userData: UpdateUserData): Promise<User> {
-    const response = await axios.put<User>(`${USER_API_BASE}/${id}`, userData);
+    const response = await apiClient.put<User>(`${USER_API_BASE}/${id}`, userData);
     return response.data;
   }
 
@@ -64,6 +65,6 @@ export class UserApi {
    * @returns Promise that resolves when the user is deleted
    */
   static async deleteUser(id: string): Promise<void> {
-    await axios.delete(`${USER_API_BASE}/${id}`);
+    await apiClient.delete(`${USER_API_BASE}/${id}`);
   }
 }

@@ -1,5 +1,5 @@
 # Backend Dockerfile for NestJS application
-FROM node:18-alpine
+FROM node:18
 
 # Set working directory
 WORKDIR /app
@@ -12,6 +12,9 @@ RUN npm ci --only=production
 
 # Copy source code
 COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
 
 # Build the application
 RUN npm run build
