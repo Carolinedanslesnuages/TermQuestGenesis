@@ -20,6 +20,7 @@ backend/src/
 │   ├── users/       # User services
 │   └── quests/      # Quest services
 ├── infrastructure/  # External concerns (database, APIs)
+│   ├── database/    # Prisma configuration
 │   ├── users/       # User repository implementations
 │   └── quests/      # Quest repository implementations
 └── presentation/    # Controllers and API endpoints
@@ -58,6 +59,7 @@ frontend/src/
 ### Backend
 - **NestJS**: Modern Node.js framework with decorators and dependency injection
 - **TypeScript**: Type-safe JavaScript development
+- **Prisma ORM**: Modern database toolkit with type-safe queries
 - **Swagger**: API documentation and testing
 - **Class Validator**: Request validation
 - **RxJS**: Reactive programming support

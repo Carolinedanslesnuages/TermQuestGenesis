@@ -8,14 +8,12 @@ import { PrismaService } from '../database/prisma.service';
  */
 @Injectable()
 export class QuestRepositoryImpl implements QuestRepository {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string): Promise<Quest | null> {
-    const quest = await this.prisma.quest.findUnique({ 
+    const quest = await this.prisma.quest.findUnique({
       where: { id },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
     return quest ? this.mapQuestWithCreatedBy(quest) : null;
   }
@@ -23,27 +21,27 @@ export class QuestRepositoryImpl implements QuestRepository {
   async findAll(): Promise<Quest[]> {
     const quests = await this.prisma.quest.findMany({
       orderBy: { createdAt: 'desc' },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
-    return quests.map(quest => this.mapQuestWithCreatedBy(quest));
+    return quests.map((quest) => this.mapQuestWithCreatedBy(quest));
   }
 
   async findByStatus(status: QuestStatus): Promise<Quest[]> {
     const quests = await this.prisma.quest.findMany({
       where: { status },
       orderBy: { createdAt: 'desc' },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
-    return quests.map(quest => this.mapQuestWithCreatedBy(quest));
+    return quests.map((quest) => this.mapQuestWithCreatedBy(quest));
   }
 
   async findByUserId(userId: string): Promise<Quest[]> {
     const quests = await this.prisma.quest.findMany({
       where: { createdById: userId },
       orderBy: { createdAt: 'desc' },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
-    return quests.map(quest => this.mapQuestWithCreatedBy(quest));
+    return quests.map((quest) => this.mapQuestWithCreatedBy(quest));
   }
 
   async create(quest: Quest): Promise<Quest> {
@@ -57,7 +55,7 @@ export class QuestRepositoryImpl implements QuestRepository {
         createdAt: quest.createdAt,
         updatedAt: quest.updatedAt,
       },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
     return this.mapQuestWithCreatedBy(createdQuest);
   }
@@ -71,7 +69,7 @@ export class QuestRepositoryImpl implements QuestRepository {
         ...(quest.status && { status: quest.status }),
         updatedAt: new Date(),
       },
-      include: { createdBy: true }
+      include: { createdBy: true },
     });
     return this.mapQuestWithCreatedBy(updatedQuest);
   }

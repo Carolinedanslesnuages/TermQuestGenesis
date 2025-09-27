@@ -1,6 +1,6 @@
 # TermQuestGenesis Backend
 
-A robust NestJS backend application built with Clean Architecture principles, TypeScript, and PostgreSQL integration via TypeORM.
+A robust NestJS backend application built with Clean Architecture principles, TypeScript, and PostgreSQL integration via Prisma ORM.
 
 ## 🏗️ Architecture
 
@@ -16,7 +16,7 @@ This backend follows Clean Architecture with clear separation of concerns:
 - **NestJS**: Modern Node.js framework with decorators and dependency injection
 - **TypeScript**: Type-safe JavaScript development
 - **PostgreSQL**: Robust relational database
-- **TypeORM**: Object-relational mapping with migration support
+- **Prisma ORM**: Modern database toolkit with type-safe queries and migrations
 - **Swagger**: API documentation and testing
 - **Jest**: Testing framework with comprehensive coverage
 
@@ -46,13 +46,18 @@ This backend follows Clean Architecture with clear separation of concerns:
    DATABASE_NAME=termquestgenesis
    DATABASE_USER=postgres
    DATABASE_PASSWORD=postgres
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/termquestgenesis"
    NODE_ENV=development
    PORT=3000
    ```
 
 3. **Database Migration**
-   Run the initial migration to create the database schema:
+   Run the Prisma migrations to create the database schema:
    ```bash
+   # Generate Prisma client
+   npx prisma generate
+   
+   # Run migrations
    npm run migration:run
    ```
 
@@ -67,7 +72,7 @@ This backend follows Clean Architecture with clear separation of concerns:
 
 ## 🗄️ Database Schema
 
-The application uses explicit migrations for schema management (synchronize is disabled for production safety).
+The application uses Prisma for schema management with explicit migrations (recommended for production).
 
 ### Tables Created
 
@@ -80,11 +85,14 @@ The application uses explicit migrations for schema management (synchronize is d
 # Run pending migrations
 npm run migration:run
 
-# Revert the last migration
-npm run migration:revert
+# Reset database and run all migrations (development only)
+npm run migration:reset
 
-# Generate a new migration (after entity changes)
-npm run migration:generate -- src/migrations/MigrationName
+# Generate a new migration
+npm run migration:generate -- <migration-name>
+
+# View database in Prisma Studio
+npm run db:studio
 ```
 
 ## 🚀 API Documentation
@@ -163,7 +171,7 @@ docker compose down
 ## 🔒 Production Considerations
 
 - **Environment Variables**: Ensure all sensitive configuration is via environment variables
-- **Migrations**: Always use explicit migrations instead of synchronize:true
+- **Migrations**: Use explicit Prisma migrations for schema changes
 - **Logging**: Adjust logging levels based on environment
 - **Security**: Implement authentication and authorization as needed
 - **Monitoring**: Add health checks and monitoring endpoints
@@ -179,13 +187,14 @@ src/
 │   ├── users/           # User services
 │   └── quests/          # Quest services  
 ├── infrastructure/      # External concerns
-│   ├── database/        # TypeORM configuration
+│   ├── database/        # Prisma configuration
 │   ├── users/           # User repository implementations
 │   └── quests/          # Quest repository implementations
 ├── presentation/        # Controllers and API endpoints
 │   ├── users/           # User controllers
 │   └── quests/          # Quest controllers
-└── migrations/          # Database migration scripts
+└── prisma/              # Prisma schema and migrations
+    └── schema.prisma    # Database schema definition
 ```
 
 ## 🤝 Contributing
@@ -194,7 +203,7 @@ src/
 2. Write comprehensive tests for new features
 3. Use TypeScript strictly
 4. Follow existing code style and patterns
-5. Create migrations for any schema changes
+5. Create Prisma migrations for any schema changes
 6. Update API documentation for endpoint changes
 
 ## 📄 License

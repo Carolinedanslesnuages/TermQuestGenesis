@@ -8,13 +8,11 @@ import { PrismaService } from '../database/prisma.service';
  */
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string): Promise<User | null> {
-    const user = await this.prisma.user.findUnique({ 
-      where: { id } 
+    const user = await this.prisma.user.findUnique({
+      where: { id },
     });
     return user || null;
   }
